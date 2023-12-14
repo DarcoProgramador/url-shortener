@@ -7,8 +7,8 @@ import (
 )
 
 var (
-	errSaveUrl = errors.New("error saving url")
-	errGetUrl  = errors.New("error getting url")
+	ErrSaveUrl = errors.New("error saving url")
+	ErrGetUrl  = errors.New("error getting url")
 )
 
 type repo struct {
@@ -35,7 +35,7 @@ func (r *repo) SaveUrl(shortUrl string, originalUrl string) (*Url, error) {
 	}
 
 	if err := r.db.Create(url).Error; err != nil {
-		return nil, errSaveUrl
+		return nil, ErrSaveUrl
 	}
 
 	return url, nil
@@ -45,7 +45,7 @@ func (r *repo) GetUrl(shortUrl string) (string, error) {
 	var url Url
 
 	if err := r.db.Where("short_url = ?", shortUrl).First(&url).Error; err != nil {
-		return "", errGetUrl
+		return "", ErrGetUrl
 	}
 
 	return url.LongUrl, nil

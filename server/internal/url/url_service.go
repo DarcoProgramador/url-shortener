@@ -1,21 +1,32 @@
 package url
 
-import "github.com/DarcoProgramador/url-shortener/util"
+import (
+	"errors"
+
+	"github.com/DarcoProgramador/url-shortener/util"
+)
+
+var (
+	ErrInvalidUrl = errors.New("invalid url")
+)
 
 type serv struct {
-	repo Repository
+	Repository
 }
 
 func NewService(repo Repository) Service {
 	return &serv{
-		repo: repo,
+		Repository: repo,
 	}
 }
 
 func (s *serv) SaveUrl(req *UrlCreateRequest) (*UrlCreateResponse, error) {
 	shortUrl := util.GenerateShortUrl(req.OriginalUrl)
 
-	url, err := s.repo.SaveUrl(shortUrl, req.OriginalUrl)
+	if shortUrl == "" {
+		return nil, ErrInvalidUrl
+	}
+	url, err := s.Repository.SaveUrl(shortUrl, req.OriginalUrl)
 	if err != nil {
 		return nil, err
 	}
@@ -27,5 +38,5 @@ func (s *serv) SaveUrl(req *UrlCreateRequest) (*UrlCreateResponse, error) {
 }
 
 func (s *serv) GetUrl(shortUrl string) (string, error) {
-	return s.repo.GetUrl(shortUrl)
+	return s.Repository.GetUrl(shortUrl)
 }
