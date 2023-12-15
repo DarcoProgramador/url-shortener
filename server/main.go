@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	conf := config.New(false)
+	conf := config.New(true)
 	DB := db.Init(conf)
 
 	urlRepo := url.NewRepository(DB)

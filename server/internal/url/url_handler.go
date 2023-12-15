@@ -31,12 +31,16 @@ func (h *Handler) SaveUrl(c echo.Context) error {
 	return c.JSON(http.StatusOK, url)
 }
 
+type UrlGetMessage struct {
+	Message string `json:"message"`
+}
+
 func (h *Handler) GetUrl(c echo.Context) error {
 	shortUrl := c.Param("shortUrl")
 
 	url, err := h.Service.GetUrl(shortUrl)
 	if err != nil {
-		return err
+		return c.JSON(http.StatusNotFound, UrlGetMessage{Message: "Url not found"})
 	}
 
 	return c.Redirect(http.StatusMovedPermanently, url)

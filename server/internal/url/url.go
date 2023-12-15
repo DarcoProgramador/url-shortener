@@ -17,7 +17,7 @@ type UrlCreateRequest struct {
 }
 
 type UrlCreateResponse struct {
-	Id       uint   `json:"id"`
+	Id       uint   `json:"-"`
 	ShortUrl string `json:"short_url"`
 }
 

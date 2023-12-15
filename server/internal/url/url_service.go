@@ -2,6 +2,7 @@ package url
 
 import (
 	"errors"
+	"os"
 
 	"github.com/DarcoProgramador/url-shortener/util"
 )
@@ -31,9 +32,15 @@ func (s *serv) SaveUrl(req *UrlCreateRequest) (*UrlCreateResponse, error) {
 		return nil, err
 	}
 
+	host := os.Getenv("HOST")
+
+	if host == "" {
+		host = "http://localhost:1323/"
+	}
+
 	return &UrlCreateResponse{
 		Id:       url.Id,
-		ShortUrl: url.ShortUrl,
+		ShortUrl: host + url.ShortUrl,
 	}, nil
 }
 
