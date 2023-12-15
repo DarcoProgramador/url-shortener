@@ -1,6 +1,6 @@
 module github.com/DarcoProgramador/url-shortener
 
-go 1.21.4
+go 1.21
 
 require (
 	github.com/btcsuite/btcutil v1.0.2
