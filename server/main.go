@@ -1,13 +1,15 @@
 package main
 
 import (
+	"github.com/DarcoProgramador/url-shortener/config"
 	"github.com/DarcoProgramador/url-shortener/db"
 	"github.com/DarcoProgramador/url-shortener/internal/url"
 	"github.com/DarcoProgramador/url-shortener/router"
 )
 
 func main() {
-	DB := db.Init()
+	conf := config.New(false)
+	DB := db.Init(conf)
 
 	urlRepo := url.NewRepository(DB)
 	urlService := url.NewService(urlRepo)
