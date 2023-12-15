@@ -1,7 +1,6 @@
 package db
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/DarcoProgramador/url-shortener/config"
@@ -11,7 +10,7 @@ import (
 )
 
 func Init(conf *config.Config) *gorm.DB {
-	dbURL := fmt.Sprintf("%s/%s", conf.DatabaseURL, conf.DatabaseName)
+	dbURL := conf.DatabaseURL
 
 	db, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 

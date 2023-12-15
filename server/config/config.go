@@ -8,8 +8,7 @@ import (
 )
 
 type Config struct {
-	DatabaseURL  string
-	DatabaseName string
+	DatabaseURL string
 }
 
 func New(prod bool) *Config {
@@ -22,10 +21,7 @@ func New(prod bool) *Config {
 		}
 	}
 	databaseURL := os.Getenv("DATABASE_URL")
-	DatabaseName := os.Getenv("DATABASE_NAME")
-
 	return &Config{
-		DatabaseURL:  databaseURL,
-		DatabaseName: DatabaseName,
+		DatabaseURL: databaseURL,
 	}
 }
