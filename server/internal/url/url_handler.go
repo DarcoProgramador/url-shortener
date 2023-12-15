@@ -2,6 +2,7 @@ package url
 
 import (
 	"net/http"
+	"net/url"
 
 	"github.com/labstack/echo/v4"
 )
@@ -16,11 +17,20 @@ func NewHandler(service Service) *Handler {
 	}
 }
 
+type Message struct {
+	Message string `json:"message"`
+}
+
 func (h *Handler) SaveUrl(c echo.Context) error {
 	var u UrlCreateRequest
 
 	if err := c.Bind(&u); err != nil {
 		return err
+	}
+
+	_, err := url.ParseRequestURI(u.OriginalUrl)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, Message{Message: "Invalid url"})
 	}
 
 	url, err := h.Service.SaveUrl(&u)
@@ -31,16 +41,12 @@ func (h *Handler) SaveUrl(c echo.Context) error {
 	return c.JSON(http.StatusOK, url)
 }
 
-type UrlGetMessage struct {
-	Message string `json:"message"`
-}
-
 func (h *Handler) GetUrl(c echo.Context) error {
 	shortUrl := c.Param("shortUrl")
 
 	url, err := h.Service.GetUrl(shortUrl)
 	if err != nil {
-		return c.JSON(http.StatusNotFound, UrlGetMessage{Message: "Url not found"})
+		return c.JSON(http.StatusNotFound, Message{Message: "Url not found"})
 	}
 
 	return c.Redirect(http.StatusMovedPermanently, url)
